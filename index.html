@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Economy Network Map</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">economy systems map</p>
+          <h1>Economic relationships</h1>
+        </div>
+        <button id="reset-view" class="ghost-button">Reset map</button>
+      </header>
+
+      <main class="content-grid">
+        <section class="map-panel">
+          <div class="map-header">
+            <h2>System map <span>· select a line or node</span></h2>
+            <div class="map-controls" aria-label="Map controls">
+              <button id="zoom-out" class="icon-button" type="button" aria-label="Zoom out" title="Zoom out">−</button>
+              <button id="zoom-in" class="icon-button" type="button" aria-label="Zoom in" title="Zoom in">+</button>
+              <button id="fit-view" class="fit-button" type="button" title="Reset zoom and pan">Fit</button>
+            </div>
+          </div>
+          <div id="map" class="map" aria-label="Economy network map"></div>
+        </section>
+
+        <aside class="detail-panel" aria-live="polite">
+          <div id="focus-card" class="focus-card"></div>
+        </aside>
+      </main>
+    </div>
+
+    <script type="module" src="data.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

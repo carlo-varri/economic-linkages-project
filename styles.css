@@ -1,0 +1,424 @@
+:root {
+  --ink: #19283a;
+  --muted: #68778a;
+  --line: #ccd8e4;
+  --canvas: #f6f8f7;
+  --blue: #3279b7;
+  --green: #31836f;
+  --amber: #b27a20;
+  --coral: #c66553;
+  --violet: #7862a6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  color: var(--ink);
+  background: #edf1f1;
+  font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+}
+
+button {
+  color: inherit;
+  font: inherit;
+}
+
+.page-shell {
+  min-height: 100vh;
+  padding: 20px 24px 24px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin: 0 auto 16px;
+  max-width: 1660px;
+}
+
+.eyebrow,
+.detail-kicker {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 14px;
+  max-width: 1660px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+.map-panel,
+.detail-panel {
+  min-width: 0;
+  border: 1px solid #d9e1e5;
+  background: #fff;
+}
+
+.map-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 110px);
+  padding: 14px;
+}
+
+.map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 4px 10px;
+}
+
+.map-header h2 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.map-header h2 span {
+  color: #84909d;
+  font-weight: 400;
+}
+
+.map-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.icon-button,
+.fit-button,
+.ghost-button {
+  display: inline-grid;
+  place-items: center;
+  height: 30px;
+  border: 1px solid #d9e1e5;
+  background: #fff;
+  cursor: pointer;
+}
+
+.icon-button {
+  width: 30px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.fit-button,
+.ghost-button {
+  padding: 0 10px;
+  font-size: 11px;
+}
+
+.map {
+  position: relative;
+  flex: 1;
+  min-height: 660px;
+  overflow: hidden;
+  background-color: var(--canvas);
+  background-image: radial-gradient(#d6dfdf 0.7px, transparent 0.7px);
+  background-size: 22px 22px;
+  touch-action: none;
+  cursor: grab;
+}
+
+.map-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 660px;
+  overflow: hidden;
+  user-select: none;
+}
+
+.map-canvas.is-panning {
+  cursor: grabbing;
+}
+
+.relationship-line {
+  fill: none;
+  stroke: #aab9c5;
+  stroke-width: 1.7;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 120ms ease, stroke-width 120ms ease, opacity 120ms ease;
+}
+
+.relationship-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 18;
+  cursor: pointer;
+  vector-effect: non-scaling-stroke;
+}
+
+.relationship {
+  cursor: pointer;
+}
+
+.relationship:hover .relationship-line,
+.relationship.is-connected .relationship-line {
+  stroke: #5d87a5;
+  stroke-width: 2.4;
+}
+
+.relationship.is-selected .relationship-line {
+  stroke: var(--blue);
+  stroke-width: 3.5;
+}
+
+.relationship.is-feedback .relationship-line {
+  stroke-dasharray: 7 4;
+}
+
+.arrowhead {
+  fill: #8fa3b3;
+}
+
+.relationship.is-selected .arrowhead {
+  fill: var(--blue);
+}
+
+.relationship-label {
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.relationship-label text {
+  fill: #506174;
+  font-family: "Avenir Next", Avenir, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.label-backplate {
+  height: 27px;
+  fill: rgba(246, 248, 247, 0.96);
+  stroke: #e0e6e7;
+  stroke-width: 0.8;
+}
+
+.relationship.is-selected .relationship-label text {
+  fill: #1d5b91;
+}
+
+.map-node {
+  cursor: pointer;
+  outline: none;
+}
+
+.map-node rect {
+  fill: #fff;
+  stroke: #9cb5c5;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 120ms ease, stroke-width 120ms ease, filter 120ms ease;
+}
+
+.map-node text {
+  fill: #21364a;
+  font-family: "Avenir Next", Avenir, sans-serif;
+  font-size: 13px;
+  font-weight: 650;
+  pointer-events: none;
+}
+
+.map-node:hover rect,
+.map-node.is-endpoint rect {
+  stroke: var(--blue);
+  stroke-width: 2.4;
+}
+
+.map-node.is-selected rect {
+  stroke: #1b5c93;
+  stroke-width: 3;
+  filter: drop-shadow(0 4px 5px rgba(30, 76, 110, 0.16));
+}
+
+.node-system rect {
+  fill: #1d3345;
+  stroke: #1d3345;
+}
+
+.node-system text {
+  fill: white;
+  font-size: 15px;
+  letter-spacing: 0.05em;
+}
+
+.node-agent rect {
+  fill: #e7f2ee;
+  stroke: #6ca592;
+}
+
+.node-institution rect {
+  fill: #e8eef8;
+  stroke: #7892bc;
+}
+
+.node-market rect {
+  fill: #fbf0da;
+  stroke: #c29b53;
+}
+
+.node-variable rect {
+  fill: #f7e9e4;
+  stroke: #c98370;
+}
+
+.node-outcome rect {
+  fill: #eeeaf7;
+  stroke: #9685bb;
+}
+
+.node-mechanism rect {
+  fill: #fff;
+  stroke: #6e9aba;
+  stroke-dasharray: 4 3;
+}
+
+.detail-panel {
+  align-self: start;
+  position: sticky;
+  top: 14px;
+  padding: 20px;
+}
+
+.detail-kicker span {
+  padding: 0 3px;
+  color: #a2adb6;
+}
+
+.focus-card h2 {
+  margin: 0 0 16px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.12;
+}
+
+.detail-summary {
+  margin: 0 0 18px;
+  color: #4b5c6e;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.edge-route {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 18px;
+  color: #38556d;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.edge-route span {
+  padding: 6px 8px;
+  border: 1px solid #dce5e8;
+  background: #f7f9f8;
+}
+
+.edge-route b {
+  color: var(--blue);
+  font-size: 17px;
+}
+
+.detail-meta {
+  padding-top: 12px;
+  border-top: 1px solid #e5eaec;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.expand-button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 11px 12px;
+  border: 0;
+  background: #1f5f87;
+  color: white;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.expand-button:hover {
+  background: #184c6d;
+}
+
+@media (max-width: 980px) {
+  .page-shell {
+    padding: 14px;
+  }
+
+  .content-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .map-panel {
+    min-height: 72vh;
+  }
+
+  .map,
+  .map-canvas {
+    min-height: 580px;
+  }
+
+  .detail-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 560px) {
+  .page-shell {
+    padding: 10px;
+  }
+
+  .topbar {
+    align-items: center;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .map-header h2 span {
+    display: none;
+  }
+
+  .map {
+    min-height: 520px;
+  }
+
+  .map-canvas {
+    min-height: 520px;
+  }
+}
